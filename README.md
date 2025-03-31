@@ -91,4 +91,3 @@ Detailed installation instructions will be provided once the initial development
 * Conda environment
 
 Check back soon for complete setup instructions.
->>>>>>> 7a1c01e (Add initial README)
