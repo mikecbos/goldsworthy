@@ -1,93 +1,115 @@
-# Semantic Similarity with Theological Enhancement (SSTE): A Non-Technical Explanation
+# Goldsworthy's Gospel-Centered Hermeneutics: Unsupervised ML Exploration
 
-The Semantic Similarity with Theological Enhancement (SSTE) model is a specialized computer tool designed to help Bible readers discover Christ-centered connections throughout Scripture. 
-Here's what it does in simple terms:
+This project applies unsupervised machine learning techniques to analyze Graeme Goldsworthy's gospel-centered hermeneutical framework from his published book.
 
-## What It Is
-SSTE is like a special pair of "gospel-centered glasses" for reading the Bible. When you look at an Old Testament passage, these glasses help you see how it might connect to Jesus Christ in the New Testament.
+## Project Overview
 
-## Project Approach
-* Two-week iterations with defined milestones
-* Incremental development with regular testing
-* Focus on core functionality first, then refinement
-### Testing Strategy
-Testing will be pragmatic and focused:
-* Manual testing of core functionality
-* Automated unit tests for critical components only
-* Limited user testing in the final phase
-### Documentation Requirements
-Documentation will be minimal but sufficient:
-* Code comments for key algorithms
-* Basic setup and usage instructions
-* Simple API documentation
-### Deliverables
-1. Functional Web Application: A working web interface demonstrating Christ-centered connection detection
-2. ML Model: Trained model for identifying Christ-centered connections
-3. Source Code: Well-organized, commented code repository
-4. Basic Documentation: Setup instructions and usage guide
-5. Demo Dataset: Sample passages with identified Christ connections
+Rather than creating another Bible web application, this project focuses on using machine learning to discover and analyze patterns within Goldsworthy's theological framework. By applying natural language processing and unsupervised learning to Goldsworthy's texts, we aim to:
 
-## Project Plan: Incorporating Goldsworthy's Hermeneutical Framework with Marvel.bible using Machine Learning
-### Understanding the Framework and Resources
-* Examine Goldsworthy's hermeneutical framework from provided documents
-* Explore Marvel.bible repository structure and resources
-* Identify key components of Marvel.bible that can be leveraged for ML integration
-* Analyze sample content to understand practical application
-### Planning the Integration
-* Identify machine learning opportunities within the Goldsworthy framework
-* Design ML integration architecture
-* Develop detailed project implementation plan
-* Create comprehensive project documentation
-### Deliverables
-* Final project plan document
-* Architecture diagram for ML integration
-* Implementation roadmap with timeline
-* Resource requirements and technical specifications
+1. Discover latent themes and connections across his works
+2. Identify how his gospel-centered approach manifests linguistically
+3. Create visual representations of his theological concepts and their relationships
+4. Uncover the deeper cosmic framework where God's glory, wisdom, and purpose are revealed through the biblical narrative
 
-## How It Works
+## Methodological Approach
 
-**Understanding Meaning:** First, the system learns the meaning of Bible passages by reading thousands of verses and understanding how words relate to each other.
-**Finding Similarities:** When you select an Old Testament passage, the system looks for New Testament passages that share similar themes, words, or concepts.
-**Adding Theological Knowledge:** Unlike regular search tools, SSTE has been taught specific theological principles from Goldsworthy's gospel-centered approach. It knows to prioritize connections that point to Jesus as the center of biblical interpretation.
-**Weighing Connections:** The system gives higher importance to certain types of connections:
+This project employs several unsupervised learning techniques:
 
-* Direct quotations of the Old Testament in the New Testament
-* Messianic themes and prophecies
-* Passages that share similar redemptive themes
+### Topic Modeling
+- Apply Latent Dirichlet Allocation (LDA) and Non-negative Matrix Factorization (NMF) to identify underlying theological themes
+- Discover how concepts cluster across different works
+- Track the development of key themes across Goldsworthy's corpus
 
+### Semantic Network Analysis
+- Create knowledge graphs connecting theological concepts
+- Visualize relationships between hermeneutical principles
+- Identify central nodes in Goldsworthy's theological framework
 
-## Real-World Example
-If you were reading Psalm 22 with its cry of "My God, my God, why have you forsaken me?", the SSTE system would:
+### Concept Clustering
+- Group related theological terms based on their contextual usage
+- Identify semantic relationships beyond explicit connections
+- Map the theological vocabulary that defines his approach
 
-* Recognize this as an important messianic psalm
-* Identify its connection to Jesus's words on the cross in Matthew 27:46
-* Show you how other parts of the psalm (like "they divide my garments") also connect to the crucifixion narrative
-* Provide insight into how this psalm fits within the broader gospel story
+### Linguistic Pattern Recognition
+- Identify distinctive language patterns associated with gospel-centered interpretation
+- Analyze how Goldsworthy articulates connections between Old and New Testaments
+- Examine linguistic markers of Christ-centered readings
 
-Simply put, SSTE is a Bible study assistant that helps you read Scripture the way Jesus taught his disciples on the road to Emmaus - seeing how all the Scriptures point to Him and His redemptive work.
+## Project Structure
 
-## Technical Information (For Developers)
+```
+goldsworthy-analysis/
+├── data/
+│   ├── raw/                 # Original PDFs of Goldsworthy's works
+│   ├── processed/           # Extracted and cleaned text
+│   └── embeddings/          # Vector representations
+├── notebooks/
+│   ├── 1_text_extraction.ipynb
+│   ├── 2_preprocessing.ipynb
+│   ├── 3_topic_modeling.ipynb
+│   ├── 4_concept_clustering.ipynb
+│   └── 5_visualization.ipynb
+├── src/
+│   ├── extraction.py        # PDF text extraction utilities
+│   ├── preprocessing.py     # Text cleaning, tokenization
+│   └── modeling.py          # Topic modeling, embedding functions
+└── visualizations/          # Generated figures and interactive visualizations
+```
 
-This project implements a machine learning model that combines:
-* BERT-based semantic embeddings fine-tuned on biblical texts
-* A knowledge graph of theological concepts
-* Custom weighting algorithms for Christ-centered connections
+## Research Questions
 
-### Tech stack:
-* Python 3.9+
-* PyTorch & Transformers
-* Flask API
-* SQLite database
+This exploratory analysis seeks to answer:
 
-## Project Status
+1. How does Goldsworthy's hermeneutical framework extend beyond simple Christ typology?
+2. What are the linguistic patterns associated with his gospel-centered reading strategy?
+3. How does the concept of God's glory manifest across different theological domains?
+4. What semantic relationships exist between key theological concepts in his framework?
+5. How might machine learning reveal connections not immediately obvious through traditional reading?
 
-This project is currently in early development following the implementation roadmap. Installation instructions and detailed documentation will be added as the project progresses.
+## Current Status
 
-## Getting Started (For Developers)
+This project is in the exploratory data analysis phase. We are currently:
+- Processing and cleaning Goldsworthy's texts
+- Implementing initial topic modeling
+- Developing visualization approaches for theological concepts
 
-Detailed installation instructions will be provided once the initial development phases are complete. Currently, the project requires:
+## Technical Implementation
 
-* Python 3.9+
-* Conda environment
+### Tech Stack
+- Python 3.9+
+- Natural Language Processing: spaCy, NLTK
+- Topic Modeling: Gensim, scikit-learn
+- Embeddings: Word2Vec, GloVe
+- Visualization: NetworkX, pyLDAvis, Matplotlib
+- Development Environment: Jupyter Notebooks
 
-Check back soon for complete setup instructions.
+### Getting Started (For Developers)
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/goldsworthy-analysis.git
+cd goldsworthy-analysis
+
+# Create and activate a conda environment
+conda create -n goldsworthy-env python=3.9
+conda activate goldsworthy-env
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Launch Jupyter to explore notebooks
+jupyter lab
+```
+
+## Future Directions
+
+While the current focus is on exploratory analysis using unsupervised learning, future directions may include:
+
+1. Developing supervised models based on initial findings
+2. Creating a knowledge graph of Goldsworthy's theological framework
+3. Applying findings to biblical text analysis
+4. Comparing Goldsworthy's approach with other hermeneutical frameworks
+
+## Contribution
+
+This is an open research project. Contributions from both theological scholars and ML practitioners are welcome. Please see the CONTRIBUTING.md file for guidelines.
