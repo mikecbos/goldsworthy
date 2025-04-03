@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NMF Topic Model Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2c3e50; margin-top: 30px; border-left: 5px solid #3498db; padding-left: 10px; }
+        .topic { margin-bottom: 40px; padding: 15px; border-radius: 5px; background-color: #f8f9fa; }
+        .term-list { display: flex; flex-wrap: wrap; margin: 10px 0; }
+        .term { margin: 5px; padding: 5px 10px; border-radius: 15px; background-color: #e0f7fa; display: inline-block; }
+        .weight { font-size: 0.8em; color: #7f8c8d; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .passage { background-color: #fffde7; padding: 10px; border-left: 3px solid #ffd600; margin: 10px 0; font-style: italic; }
+        img { max-width: 100%; height: auto; margin: 20px 0; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>NMF Topic Model Analysis</h1>
+    
+    <h2>Model Overview</h2>
+    <p>Number of topics: 14</p>
+    <p>Number of documents: 74</p>
+    <p>Vocabulary size: 3613</p>
+    
+    <h2>Topic Term Distributions</h2>
+    <img src="nmf_top_terms_per_topic.png" alt="Top Terms per Topic" />
+    
+    <h2>Topic Distribution Across Documents</h2>
+    <img src="nmf_topic_document_heatmap.png" alt="Topic Distribution Heatmap" />
+    
+    <h2>Topic Similarities</h2>
+    <img src="nmf_topic_similarities.png" alt="Topic Similarities" />
+    
+    <h2>Document Distribution by Dominant Topic</h2>
+    <img src="nmf_document_distribution.png" alt="Document Distribution" />
+    
+    <h2>Topic Projection (t-SNE)</h2>
+    <img src="nmf_topics_tsne.png" alt="t-SNE Projection" />
+    
+    <h2>Detailed Topic Information</h2>
+
+    <div class="topic">
+        <h3>Topic 1</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">theology <span class="weight">(1.5371)</span></span> <span class="term">biblical <span class="weight">(1.0300)</span></span> <span class="term">systematics <span class="weight">(0.7663)</span></span> <span class="term">systematic <span class="weight">(0.5723)</span></span> <span class="term">exegesis <span class="weight">(0.4192)</span></span> <span class="term">doctrine <span class="weight">(0.3458)</span></span> <span class="term">dogmatics <span class="weight">(0.3013)</span></span> <span class="term">doctrinal <span class="weight">(0.2745)</span></span> <span class="term">data <span class="weight">(0.2545)</span></span> <span class="term">text <span class="weight">(0.2512)</span></span> <span class="term">dogmatic <span class="weight">(0.2453)</span></span> <span class="term">church <span class="weight">(0.2432)</span></span> <span class="term">murray <span class="weight">(0.2408)</span></span> <span class="term">relationship <span class="weight">(0.2306)</span></span> <span class="term">theological <span class="weight">(0.2258)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.2805</td>
+                <td class="passage">natrow sense kevin vanhoozer drama doctrine louisville westminster john knox purpose study content r...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.2731</td>
+                <td class="passage">clearly asserted systematics dependent biblical theology matics matter mote recently also concern fr...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.2457</td>
+                <td class="passage">manner might suggest need encourage christian diverse biblical genre focus literary genre could much...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 2</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">testament <span class="weight">(1.0319)</span></span> <span class="term">old <span class="weight">(0.6716)</span></span> <span class="term">new <span class="weight">(0.3123)</span></span> <span class="term">typology <span class="weight">(0.2018)</span></span> <span class="term">law <span class="weight">(0.1649)</span></span> <span class="term">unity <span class="weight">(0.1493)</span></span> <span class="term">theology <span class="weight">(0.1208)</span></span> <span class="term">von <span class="weight">(0.1170)</span></span> <span class="term">covenant <span class="weight">(0.1137)</span></span> <span class="term">approach <span class="weight">(0.1094)</span></span> <span class="term">Christ <span class="weight">(0.1075)</span></span> <span class="term">diversity <span class="weight">(0.1039)</span></span> <span class="term">church <span class="weight">(0.1034)</span></span> <span class="term">canon <span class="weight">(0.1032)</span></span> <span class="term">relationship <span class="weight">(0.1030)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.5149</td>
+                <td class="passage">canon new testament church grand rapid eerdmans ttt baker tivo testament one bible edn leicester ivp...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.4942</td>
+                <td class="passage">theological dimension eitheror apptoach contrast typology method relating unity diversity recent bib...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.4829</td>
+                <td class="passage">page gospel theological dimension perceptible unity however majority biblical theology written last ...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 3</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">culture <span class="weight">(1.0009)</span></span> <span class="term">cultural <span class="weight">(0.6313)</span></span> <span class="term">contextualization <span class="weight">(0.5997)</span></span> <span class="term">human <span class="weight">(0.3696)</span></span> <span class="term">horizon <span class="weight">(0.3282)</span></span> <span class="term">larkin <span class="weight">(0.2639)</span></span> <span class="term">biblical <span class="weight">(0.2026)</span></span> <span class="term">language <span class="weight">(0.1975)</span></span> <span class="term">expression <span class="weight">(0.1895)</span></span> <span class="term">word <span class="weight">(0.1818)</span></span> <span class="term">hesselgrave <span class="weight">(0.1665)</span></span> <span class="term">beginning <span class="weight">(0.1626)</span></span> <span class="term">hiebert <span class="weight">(0.1571)</span></span> <span class="term">supracultural <span class="weight">(0.1532)</span></span> <span class="term">subject <span class="weight">(0.1521)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.3732</td>
+                <td class="passage">nevertheless modern emergence contextualization human culture reflects image culture divine communit...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.3562</td>
+                <td class="passage">systematic exposition bible teaching anthony thiselton tivo horizon exeter paternoster miroslav volf...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.3522</td>
+                <td class="passage">new hermeneutic fuchs ebeling baker anthony thiselton new horizon hermeneutics grand rapid zondervan...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 4</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">jew <span class="weight">(0.4561)</span></span> <span class="term">gentile <span class="weight">(0.3658)</span></span> <span class="term">nation <span class="weight">(0.3379)</span></span> <span class="term">culture <span class="weight">(0.3320)</span></span> <span class="term">contextualization <span class="weight">(0.2938)</span></span> <span class="term">israel <span class="weight">(0.2731)</span></span> <span class="term">israelite <span class="weight">(0.2578)</span></span> <span class="term">language <span class="weight">(0.2472)</span></span> <span class="term">jewish <span class="weight">(0.2412)</span></span> <span class="term">testament <span class="weight">(0.2390)</span></span> <span class="term">gospel <span class="weight">(0.2286)</span></span> <span class="term">Jesus <span class="weight">(0.1897)</span></span> <span class="term">transformation <span class="weight">(0.1806)</span></span> <span class="term">covenant <span class="weight">(0.1781)</span></span> <span class="term">intact <span class="weight">(0.1750)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.5298</td>
+                <td class="passage">context message part culture kingdom art old testament remains intact petson jesus servant passage p...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.4209</td>
+                <td class="passage">point whete request cart culture othe voined covenant people share load israelite soil take home opp...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.3839</td>
+                <td class="passage">justification distinct pentecost allows language difference gospel matter since indeed based ethnici...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 5</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">translation <span class="weight">(0.9782)</span></span> <span class="term">equivalence <span class="weight">(0.5021)</span></span> <span class="term">dynamic <span class="weight">(0.3984)</span></span> <span class="term">ryken <span class="weight">(0.3435)</span></span> <span class="term">bible <span class="weight">(0.2173)</span></span> <span class="term">version <span class="weight">(0.1760)</span></span> <span class="term">original <span class="weight">(0.1569)</span></span> <span class="term">english <span class="weight">(0.1555)</span></span> <span class="term">meaning <span class="weight">(0.1509)</span></span> <span class="term">formal <span class="weight">(0.1425)</span></span> <span class="term">text <span class="weight">(0.1302)</span></span> <span class="term">vernacular <span class="weight">(0.1301)</span></span> <span class="term">metaphor <span class="weight">(0.1238)</span></span> <span class="term">reader <span class="weight">(0.1234)</span></span> <span class="term">walk <span class="weight">(0.1210)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.5338</td>
+                <td class="passage">frequent changin follow evil men advice ging concrete metaphor abstraction dynamic equivalence hang ...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.5064</td>
+                <td class="passage">point ryken make sim vavalent found kel richards australian vernacular rendition tight erves biblica...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.5063</td>
+                <td class="passage">good translation version read church text believe profound phil profound philosophical theological d...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 6</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">history <span class="weight">(1.0456)</span></span> <span class="term">event <span class="weight">(0.4452)</span></span> <span class="term">historical <span class="weight">(0.3021)</span></span> <span class="term">narrative <span class="weight">(0.2347)</span></span> <span class="term">biblical <span class="weight">(0.2096)</span></span> <span class="term">past <span class="weight">(0.2064)</span></span> <span class="term">story <span class="weight">(0.1901)</span></span> <span class="term">Jesus <span class="weight">(0.1799)</span></span> <span class="term">gospel <span class="weight">(0.1769)</span></span> <span class="term">philosophy <span class="weight">(0.1614)</span></span> <span class="term">creation <span class="weight">(0.1572)</span></span> <span class="term">long <span class="weight">(0.1502)</span></span> <span class="term">claim <span class="weight">(0.1360)</span></span> <span class="term">secular <span class="weight">(0.1297)</span></span> <span class="term">view <span class="weight">(0.1273)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.4369</td>
+                <td class="passage">overwhelming sense linear picture narrated event difference lie assessment relation movement history...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.4321</td>
+                <td class="passage">various way latter way towards nature explaining story consistent presupposition christian factualit...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.4175</td>
+                <td class="passage">concern chapter first mean evangelical hermeneutics regain lost ground vital say christianity histor...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 7</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">speechact <span class="weight">(0.4341)</span></span> <span class="term">speech <span class="weight">(0.2785)</span></span> <span class="term">inerrancy <span class="weight">(0.2596)</span></span> <span class="term">propositional <span class="weight">(0.2576)</span></span> <span class="term">act <span class="weight">(0.2447)</span></span> <span class="term">illocutionary <span class="weight">(0.1990)</span></span> <span class="term">theory <span class="weight">(0.1960)</span></span> <span class="term">force <span class="weight">(0.1923)</span></span> <span class="term">allison <span class="weight">(0.1846)</span></span> <span class="term">vanhoozer <span class="weight">(0.1712)</span></span> <span class="term">proposition <span class="weight">(0.1529)</span></span> <span class="term">discourse <span class="weight">(0.1402)</span></span> <span class="term">statement <span class="weight">(0.1387)</span></span> <span class="term">infallibility <span class="weight">(0.1359)</span></span> <span class="term">austin <span class="weight">(0.1326)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.6969</td>
+                <td class="passage">predicating expres propositional statement need fall within purview important illocutionaty force th...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.6457</td>
+                <td class="passage">subset infallibility occasion scripture affirm something biblical notion affirmation true thus may c...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.6384</td>
+                <td class="passage">used otdinary human dis course analytical strategy acknowledges every statement bartholomews caveat ...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 8</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">reading <span class="weight">(0.4899)</span></span> <span class="term">bible <span class="weight">(0.3433)</span></span> <span class="term">programme <span class="weight">(0.2909)</span></span> <span class="term">teacher <span class="weight">(0.2656)</span></span> <span class="term">text <span class="weight">(0.2583)</span></span> <span class="term">preacher <span class="weight">(0.2153)</span></span> <span class="term">commentary <span class="weight">(0.2048)</span></span> <span class="term">help <span class="weight">(0.1971)</span></span> <span class="term">family <span class="weight">(0.1854)</span></span> <span class="term">understanding <span class="weight">(0.1724)</span></span> <span class="term">passage <span class="weight">(0.1679)</span></span> <span class="term">strategy <span class="weight">(0.1656)</span></span> <span class="term">devotional <span class="weight">(0.1630)</span></span> <span class="term">improve <span class="weight">(0.1612)</span></span> <span class="term">application <span class="weight">(0.1518)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>4-Goldsworthy-Excerpt</td>
+                <td>0.6107</td>
+                <td class="passage">goldsworthy framework gospel centred hermeneutic goldsworthy excerpt christian bible hand hermeneuti...</td>
+            </tr>
+            
+            <tr>
+                <td>3-Chpt19a</td>
+                <td>0.5504</td>
+                <td class="passage">christ interpreted allowing text dictate outcome eloquent testimony every fact becomes fact related ...</td>
+            </tr>
+            
+            <tr>
+                <td>4-Goldsworthy-Excerpt</td>
+                <td>0.4684</td>
+                <td class="passage">genesis revelation usual programme read whole book one aim understand better unity bible get close d...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 9</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">calvin <span class="weight">(0.6111)</span></span> <span class="term">knowledge <span class="weight">(0.2553)</span></span> <span class="term">scripture <span class="weight">(0.2405)</span></span> <span class="term">spirit <span class="weight">(0.2130)</span></span> <span class="term">word <span class="weight">(0.1307)</span></span> <span class="term">reformer <span class="weight">(0.1270)</span></span> <span class="term">warfield <span class="weight">(0.1147)</span></span> <span class="term">luther <span class="weight">(0.1075)</span></span> <span class="term">erasmus <span class="weight">(0.1031)</span></span> <span class="term">sinner <span class="weight">(0.1003)</span></span> <span class="term">differs <span class="weight">(0.0991)</span></span> <span class="term">imp <span class="weight">(0.0991)</span></span> <span class="term">known <span class="weight">(0.0952)</span></span> <span class="term">augustine <span class="weight">(0.0936)</span></span> <span class="term">theol <span class="weight">(0.0921)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.7362</td>
+                <td class="passage">wah city engrave upon people min itis endow majesty sovereign power immediate presence men god known...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.6503</td>
+                <td class="passage">considered presupposition starting point reformer includes hermeneutical principle must claim return...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.5758</td>
+                <td class="passage">calvin tational proof declares argument strong enough view sin becomes major qualification epistemol...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 10</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">evangelical <span class="weight">(0.3188)</span></span> <span class="term">enlightenment <span class="weight">(0.2943)</span></span> <span class="term">scripture <span class="weight">(0.2909)</span></span> <span class="term">scholarship <span class="weight">(0.2219)</span></span> <span class="term">clarity <span class="weight">(0.1850)</span></span> <span class="term">principle <span class="weight">(0.1749)</span></span> <span class="term">alone <span class="weight">(0.1746)</span></span> <span class="term">critical <span class="weight">(0.1649)</span></span> <span class="term">authority <span class="weight">(0.1554)</span></span> <span class="term">word <span class="weight">(0.1299)</span></span> <span class="term">reformation <span class="weight">(0.1293)</span></span> <span class="term">protestant <span class="weight">(0.1276)</span></span> <span class="term">bible <span class="weight">(0.1238)</span></span> <span class="term">presupposition <span class="weight">(0.1228)</span></span> <span class="term">reformer <span class="weight">(0.1203)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.5146</td>
+                <td class="passage">need ask whether great dominated modernist scholarship world reformation principle stand postmodern ...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.4679</td>
+                <td class="passage">recognize value particular heritage concern god affect theology worship service premodern period ang...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.4017</td>
+                <td class="passage">lack ati sbecur scripture ble place say anthony thiselton auth word ness scapa resulting creative or...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 11</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">divinity <span class="weight">(0.2448)</span></span> <span class="term">unitydistinction <span class="weight">(0.2419)</span></span> <span class="term">humanity <span class="weight">(0.2101)</span></span> <span class="term">human <span class="weight">(0.1992)</span></span> <span class="term">Christ <span class="weight">(0.1856)</span></span> <span class="term">relationship <span class="weight">(0.1794)</span></span> <span class="term">Jesus <span class="weight">(0.1784)</span></span> <span class="term">unity <span class="weight">(0.1742)</span></span> <span class="term">person <span class="weight">(0.1502)</span></span> <span class="term">reality <span class="weight">(0.1417)</span></span> <span class="term">distinction <span class="weight">(0.1397)</span></span> <span class="term">without <span class="weight">(0.1349)</span></span> <span class="term">one <span class="weight">(0.1335)</span></span> <span class="term">heresy <span class="weight">(0.1300)</span></span> <span class="term">trinity <span class="weight">(0.1225)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>3-Chpt19a</td>
+                <td>0.6904</td>
+                <td class="passage">followed history christological thinking show numbet representa showed fully human yet made claim un...</td>
+            </tr>
+            
+            <tr>
+                <td>3-Chpt19a</td>
+                <td>0.6309</td>
+                <td class="passage">divine sovereignty human responsibility holy spirit oversaw process human author said understand acc...</td>
+            </tr>
+            
+            <tr>
+                <td>3-Chpt19a</td>
+                <td>0.5231</td>
+                <td class="passage">calvinist whose god man indeed divine sovereignty true human freedom without conflict ought able acc...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 12</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">exegesis <span class="weight">(0.4502)</span></span> <span class="term">text <span class="weight">(0.3185)</span></span> <span class="term">linguistics <span class="weight">(0.2001)</span></span> <span class="term">context <span class="weight">(0.1890)</span></span> <span class="term">silva <span class="weight">(0.1665)</span></span> <span class="term">language <span class="weight">(0.1577)</span></span> <span class="term">gesis <span class="weight">(0.1554)</span></span> <span class="term">literary <span class="weight">(0.1552)</span></span> <span class="term">exegesi <span class="weight">(0.1504)</span></span> <span class="term">corley <span class="weight">(0.1452)</span></span> <span class="term">moisés <span class="weight">(0.1398)</span></span> <span class="term">tradition <span class="weight">(0.1339)</span></span> <span class="term">biblical <span class="weight">(0.1329)</span></span> <span class="term">work <span class="weight">(0.1254)</span></span> <span class="term">bruce <span class="weight">(0.1236)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.5861</td>
+                <td class="passage">ghtenmentdriven exegesi gospel esis enabled exegete hiok assume patticular epistemology literary dim...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.5551</td>
+                <td class="passage">double authorshi seen complicated god speaks word similar distinction made nal mickel eerdmans contr...</td>
+            </tr>
+            
+            <tr>
+                <td>1-Chapt13-15</td>
+                <td>0.4446</td>
+                <td class="passage">differentiates five form tradition dogmatic theology enshrines principle presupposition bibli taditi...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 13</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">creation <span class="weight">(0.3753)</span></span> <span class="term">Christ <span class="weight">(0.3602)</span></span> <span class="term">Jesus <span class="weight">(0.2694)</span></span> <span class="term">new <span class="weight">(0.2468)</span></span> <span class="term">reality <span class="weight">(0.2066)</span></span> <span class="term">people <span class="weight">(0.1822)</span></span> <span class="term">kingdom <span class="weight">(0.1692)</span></span> <span class="term">true <span class="weight">(0.1515)</span></span> <span class="term">image <span class="weight">(0.1372)</span></span> <span class="term">priest <span class="weight">(0.1292)</span></span> <span class="term">bible <span class="weight">(0.1251)</span></span> <span class="term">nation <span class="weight">(0.1241)</span></span> <span class="term">made <span class="weight">(0.1230)</span></span> <span class="term">land <span class="weight">(0.1218)</span></span> <span class="term">prophet <span class="weight">(0.1171)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.5424</td>
+                <td class="passage">way christ fulfils category related reason christ jesus alone merited entrance father kingdom mactot...</td>
+            </tr>
+            
+            <tr>
+                <td>2-Chpt16-18</td>
+                <td>0.4695</td>
+                <td class="passage">relationship two testament bipolar revealed coming christ tension referred understood far ate revela...</td>
+            </tr>
+            
+            <tr>
+                <td>5-Epilogue</td>
+                <td>0.4183</td>
+                <td class="passage">page epilogue nature god sovereign rule creation control thing grand plan gospel effect gospelcentre...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
+    <div class="topic">
+        <h3>Topic 14</h3>
+        
+        <h4>Top Terms:</h4>
+        <div class="term-list">
+    <span class="term">Christ <span class="weight">(0.3235)</span></span> <span class="term">spirit <span class="weight">(0.2890)</span></span> <span class="term">ascension <span class="weight">(0.2826)</span></span> <span class="term">resurrection <span class="weight">(0.2037)</span></span> <span class="term">coming <span class="weight">(0.2016)</span></span> <span class="term">word <span class="weight">(0.1525)</span></span> <span class="term">Jesus <span class="weight">(0.1373)</span></span> <span class="term">Lord <span class="weight">(0.1371)</span></span> <span class="term">world <span class="weight">(0.1346)</span></span> <span class="term">kingdom <span class="weight">(0.1315)</span></span> <span class="term">cor <span class="weight">(0.1218)</span></span> <span class="term">life <span class="weight">(0.1208)</span></span> <span class="term">work <span class="weight">(0.1136)</span></span> <span class="term">demand <span class="weight">(0.1123)</span></span> <span class="term">fact <span class="weight">(0.1087)</span></span> 
+        </div>
+        
+        <h4>Most Representative Documents:</h4>
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Topic Weight</th>
+                <th>Excerpt</th>
+            </tr>
+    
+            <tr>
+                <td>3-Chpt19a</td>
+                <td>0.7339</td>
+                <td class="passage">destiny resurrection body perspective second resurrection ascension jesus show coming fifth hermeneu...</td>
+            </tr>
+            
+            <tr>
+                <td>3-Chpt19a</td>
+                <td>0.5165</td>
+                <td class="passage">space time third incarnation point divinity god revealing hermeneutics work christ redeeming word co...</td>
+            </tr>
+            
+            <tr>
+                <td>3-Chpt19a</td>
+                <td>0.4818</td>
+                <td class="passage">tied christ hermeneutical stun holy spirit guarante inspiration reminds evangelistic speaker power a...</td>
+            </tr>
+            
+        </table>
+    </div>
+    
