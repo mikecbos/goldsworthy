@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" data-backdrop="stone">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BibleSherpa — Handshake</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================
+       BACKDROP SYSTEM
+    ======================================== */
+    :root {
+      --transition-backdrop: 3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Stone - Reality, Hard Truth, Tactile */
+    html[data-backdrop="stone"] {
+      --bg-primary: #161616;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(22, 22, 22, 0.97) 0%, rgba(18, 18, 18, 0.98) 100%);
+      --text-primary: #e8e4df;
+      --text-muted: rgba(232, 228, 223, 0.5);
+      --accent-glow: transparent;
+    }
+
+    /* Forest - Sentiment, Organic Emotion */
+    html[data-backdrop="forest"] {
+      --bg-primary: #0f1a14;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(15, 26, 20, 0.95) 0%, rgba(18, 32, 24, 0.97) 50%, rgba(12, 22, 16, 0.98) 100%);
+      --text-primary: #d4e0d9;
+      --text-muted: rgba(146, 176, 161, 0.5);
+      --accent-glow: rgba(92, 122, 107, 0.02);
+    }
+
+    /* Paper - Study, Scripture, Historical */
+    html[data-backdrop="paper"] {
+      --bg-primary: #1c1a17;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(28, 26, 23, 0.94) 0%, rgba(24, 22, 19, 0.96) 100%);
+      --text-primary: #ede6db;
+      --text-muted: rgba(212, 196, 168, 0.5);
+      --accent-glow: rgba(180, 160, 120, 0.02);
+    }
+
+    /* Mist - Aspiration, Unseen Hope, Mystery */
+    html[data-backdrop="mist"] {
+      --bg-primary: #141619;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(20, 22, 25, 0.92) 0%, rgba(24, 28, 34, 0.94) 40%, rgba(18, 20, 24, 0.96) 100%);
+      --text-primary: #d0d4da;
+      --text-muted: rgba(160, 170, 185, 0.5);
+      --accent-glow: rgba(140, 160, 190, 0.03);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: 
+        background-color var(--transition-backdrop),
+        color var(--transition-backdrop);
+    }
+
+    /* Textured background layer */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: var(--bg-texture);
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity var(--transition-backdrop);
+    }
+
+    /* Gradient overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-overlay);
+      pointer-events: none;
+      z-index: 1;
+      transition: background var(--transition-backdrop);
+    }
+
+    /* Mist breathing animation */
+    html[data-backdrop="mist"] body::after {
+      animation: mistBreathe 8s ease-in-out infinite;
+    }
+
+    @keyframes mistBreathe {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.94; }
+    }
+
+    /* Forest subtle movement */
+    html[data-backdrop="forest"] body::before {
+      animation: forestSway 12s ease-in-out infinite;
+    }
+
+    @keyframes forestSway {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.02) translateY(-1%); }
+    }
+
+    /* ========================================
+       MAIN CONTENT
+    ======================================== */
+    .surface {
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .surface-inner {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ========================================
+       QUESTION HEADER
+    ======================================== */
+    .question-wrapper {
+      position: relative;
+      min-height: 50px;
+      margin-bottom: 48px;
+      width: 100%;
+    }
+
+    .main-question {
+      font-size: 32px;
+      font-weight: 400;
+      transition: opacity 0.6s ease, color var(--transition-backdrop);
+    }
+
+    .main-question.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .transformed-question {
+      font-size: 28px;
+      font-style: italic;
+      color: var(--text-muted);
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      transition: opacity 0.6s ease, color var(--transition-backdrop);
+      cursor: pointer;
+      pointer-events: none;
+    }
+
+    .transformed-question.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .transformed-question:hover {
+      opacity: 0.6;
+    }
+
+    /* ========================================
+       INPUT
+    ======================================== */
+    .input-line {
+      width: 100%;
+      border-bottom: 1px solid rgba(245, 242, 237, 0.12);
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+
+    .input-line input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'EB Garamond', serif;
+      font-size: 24px;
+      color: var(--text-primary);
+      text-align: center;
+      transition: color var(--transition-backdrop);
+    }
+
+    .input-line input::placeholder {
+      color: var(--text-muted);
+      transition: color var(--transition-backdrop);
+    }
+
+    /* ========================================
+       WHISPER LINKS (Gates)
+    ======================================== */
+    .whisper-links {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.8s ease;
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    .whisper-links.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .whisper-links.faded {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .whisper-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245, 242, 237, 0.15);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .whisper-links a:hover {
+      border-color: var(--text-muted);
+    }
+
+    /* ========================================
+       SEED FADE
+    ======================================== */
+    .seed-fade {
+      margin-top: 8px;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-muted);
+      opacity: 0;
+      transform: translateY(5px);
+      transition: all 1.2s ease;
+      pointer-events: none;
+    }
+
+    .seed-fade.visible {
+      opacity: 0.35;
+      transform: translateY(0);
+    }
+
+    .seed-fade span {
+      color: var(--text-primary);
+      opacity: 0.85;
+    }
+
+    /* ========================================
+       RESET WHISPER ("another path")
+    ======================================== */
+    .reset-whisper {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      font-style: italic;
+      color: var(--text-muted);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .reset-whisper.visible {
+      opacity: 0.2;
+      pointer-events: auto;
+    }
+
+    .reset-whisper:hover {
+      opacity: 0.6;
+      border-bottom-color: var(--text-muted);
+    }
+
+    /* ========================================
+       BACKDROP ANCHORS
+    ======================================== */
+    .backdrop-anchors {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      font-family: 'EB Garamond', serif;
+      font-size: 13px;
+      font-style: italic;
+      letter-spacing: 0.02em;
+      z-index: 1000;
+    }
+
+    .backdrop-anchor {
+      color: var(--text-muted);
+      opacity: 0.4;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      padding: 4px 2px;
+      border-bottom: 1px solid transparent;
+    }
+
+    .backdrop-anchor:hover {
+      opacity: 0.7;
+    }
+
+    .backdrop-anchor.active {
+      opacity: 1;
+      color: var(--text-primary);
+      border-bottom-color: var(--text-muted);
+    }
+
+    .backdrop-separator {
+      color: var(--text-muted);
+      opacity: 0.2;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- The Surface -->
+  <main class="surface">
+    <div class="surface-inner">
+      <div class="question-wrapper">
+        <div class="main-question" id="main-question">Where are you at?</div>
+        <div class="transformed-question" id="transformed-question"></div>
+      </div>
+      <div class="input-line">
+        <input type="text" placeholder="" id="main-input">
+      </div>
+      <div class="whisper-links" id="whisper-links">
+        Start from a <a data-gate="story">story</a>, a <a data-gate="virtue">virtue</a>, or a <a data-gate="verse">verse</a>.
+      </div>
+      <div class="seed-fade" id="seed-fade"></div>
+    </div>
+  </main>
+
+  <!-- Reset Whisper -->
+  <div class="reset-whisper" id="reset-whisper">another path</div>
+
+  <!-- Backdrop Anchors -->
+  <div class="backdrop-anchors">
+    <span class="backdrop-anchor active" data-backdrop="stone">stone</span>
+    <span class="backdrop-separator">·</span>
+    <span class="backdrop-anchor" data-backdrop="forest">forest</span>
+    <span class="backdrop-separator">·</span>
+    <span class="backdrop-anchor" data-backdrop="paper">paper</span>
+    <span class="backdrop-separator">·</span>
+    <span class="backdrop-anchor" data-backdrop="mist">mist</span>
+  </div>
+
+  <script>
+    // Elements
+    const mainQuestion = document.getElementById('main-question');
+    const transformedQuestion = document.getElementById('transformed-question');
+    const mainInput = document.getElementById('main-input');
+    const whisperLinks = document.getElementById('whisper-links');
+    const seedFade = document.getElementById('seed-fade');
+    const resetWhisper = document.getElementById('reset-whisper');
+    const backdropAnchors = document.querySelectorAll('.backdrop-anchor');
+    const gateLinks = whisperLinks.querySelectorAll('a');
+
+    let whisperTimer = null;
+    let seedTimer = null;
+
+    // Gate data
+    const GATES = {
+      story: {
+        question: 'A story that stayed with you?',
+        placeholder: 'A film, a novel, a myth...',
+        seeds: 'Maybe... <span>Titanic (1997)</span>, <span>Pride and Prejudice</span>, or <span>the curse of Sisyphus</span>.'
+      },
+      virtue: {
+        question: 'A struggle of the heart?',
+        placeholder: 'Patience, courage, forgiveness...',
+        seeds: 'Something like... <span>patience</span>, <span>betrayal</span>, or <span>sacrifice</span>?'
+      },
+      verse: {
+        question: "A text you're opening?",
+        placeholder: 'A passage, a chapter, a phrase...',
+        seeds: 'Perhaps... <span>the book of Isaiah</span>, <span>John 3:16</span>, or <span>Job</span>?'
+      }
+    };
+
+    // Backdrop setter
+    function setBackdrop(name) {
+      document.documentElement.setAttribute('data-backdrop', name);
+      backdropAnchors.forEach(a => {
+        a.classList.toggle('active', a.dataset.backdrop === name);
+      });
+    }
+
+    backdropAnchors.forEach(anchor => {
+      anchor.addEventListener('click', () => {
+        setBackdrop(anchor.dataset.backdrop);
+      });
+    });
+
+    // Initialize
+    function init() {
+      mainQuestion.classList.remove('hidden');
+      transformedQuestion.classList.remove('visible');
+      transformedQuestion.textContent = '';
+      mainInput.value = '';
+      mainInput.placeholder = '';
+      whisperLinks.classList.remove('visible', 'faded');
+      seedFade.classList.remove('visible');
+      seedFade.innerHTML = '';
+      resetWhisper.classList.remove('visible');
+
+      // Clear timers
+      if (whisperTimer) clearTimeout(whisperTimer);
+      if (seedTimer) clearTimeout(seedTimer);
+
+      // Fade in whispers after 2 seconds
+      whisperTimer = setTimeout(() => {
+        whisperLinks.classList.add('visible');
+      }, 2000);
+    }
+
+    // Gate selection
+    function selectGate(gateKey) {
+      const gate = GATES[gateKey];
+
+      // 1. Hide whispers
+      whisperLinks.classList.add('faded');
+
+      // 2. Transform header
+      transformedQuestion.textContent = gate.question;
+      mainQuestion.classList.add('hidden');
+      transformedQuestion.classList.add('visible');
+
+      // 3. Set placeholder and focus
+      mainInput.placeholder = gate.placeholder;
+      mainInput.focus();
+
+      // 4. Reset seeds
+      seedFade.classList.remove('visible');
+
+      // 5. Clear pending seed timer
+      if (seedTimer) clearTimeout(seedTimer);
+
+      // 6. Show seeds after 1.5s
+      seedTimer = setTimeout(() => {
+        seedFade.innerHTML = gate.seeds;
+        seedFade.classList.add('visible');
+      }, 1500);
+
+      // 7. Show reset whisper
+      resetWhisper.classList.add('visible');
+    }
+
+    // Reset to original state
+    function resetToOrigin() {
+      // 1. Revert header
+      mainQuestion.classList.remove('hidden');
+      transformedQuestion.classList.remove('visible');
+
+      // 2. Hide seeds and reset whisper
+      seedFade.classList.remove('visible');
+      resetWhisper.classList.remove('visible');
+
+      // 3. Clear input
+      mainInput.value = '';
+      mainInput.placeholder = '';
+
+      // 4. Clear seed timer
+      if (seedTimer) clearTimeout(seedTimer);
+
+      // 5. Bring back whispers after a brief pause
+      setTimeout(() => {
+        whisperLinks.classList.remove('faded');
+        whisperLinks.classList.add('visible');
+      }, 300);
+    }
+
+    // Event listeners
+    gateLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        selectGate(link.dataset.gate);
+      });
+    });
+
+    // Reset via "another path" link
+    resetWhisper.addEventListener('click', resetToOrigin);
+
+    // Reset via clicking transformed header
+    transformedQuestion.addEventListener('click', resetToOrigin);
+
+    // Start
+    init();
+  </script>
+
+</body>
+</html>
