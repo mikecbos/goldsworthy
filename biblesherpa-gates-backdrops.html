@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" data-backdrop="stone">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BibleSherpa — Situated Truth</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================
+       BACKDROP SYSTEM
+    ======================================== */
+    :root {
+      --transition-backdrop: 3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Stone - Reality, Hard Truth, Tactile */
+    html[data-backdrop="stone"] {
+      --bg-primary: #161616;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(22, 22, 22, 0.97) 0%, rgba(18, 18, 18, 0.98) 100%);
+      --text-primary: #e8e4df;
+      --text-muted: rgba(232, 228, 223, 0.5);
+      --accent-glow: transparent;
+    }
+
+    /* Forest - Sentiment, Organic Emotion */
+    html[data-backdrop="forest"] {
+      --bg-primary: #0f1a14;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(15, 26, 20, 0.95) 0%, rgba(18, 32, 24, 0.97) 50%, rgba(12, 22, 16, 0.98) 100%);
+      --text-primary: #d4e0d9;
+      --text-muted: rgba(146, 176, 161, 0.5);
+      --accent-glow: rgba(92, 122, 107, 0.02);
+    }
+
+    /* Paper - Study, Scripture, Historical */
+    html[data-backdrop="paper"] {
+      --bg-primary: #1c1a17;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(28, 26, 23, 0.94) 0%, rgba(24, 22, 19, 0.96) 100%);
+      --text-primary: #ede6db;
+      --text-muted: rgba(212, 196, 168, 0.5);
+      --accent-glow: rgba(180, 160, 120, 0.02);
+    }
+
+    /* Mist - Aspiration, Unseen Hope, Mystery */
+    html[data-backdrop="mist"] {
+      --bg-primary: #141619;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(20, 22, 25, 0.92) 0%, rgba(24, 28, 34, 0.94) 40%, rgba(18, 20, 24, 0.96) 100%);
+      --text-primary: #d0d4da;
+      --text-muted: rgba(160, 170, 185, 0.5);
+      --accent-glow: rgba(140, 160, 190, 0.03);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: 
+        background-color var(--transition-backdrop),
+        color var(--transition-backdrop);
+    }
+
+    /* Textured background layer */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: var(--bg-texture);
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity var(--transition-backdrop);
+    }
+
+    /* Gradient overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-overlay);
+      pointer-events: none;
+      z-index: 1;
+      transition: background var(--transition-backdrop);
+    }
+
+    /* Mist breathing animation */
+    html[data-backdrop="mist"] body::after {
+      animation: mistBreathe 8s ease-in-out infinite;
+    }
+
+    @keyframes mistBreathe {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.94; }
+    }
+
+    /* Forest subtle movement */
+    html[data-backdrop="forest"] body::before {
+      animation: forestSway 12s ease-in-out infinite;
+    }
+
+    @keyframes forestSway {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.02) translateY(-1%); }
+    }
+
+    /* ========================================
+       APPROACH SELECTOR
+    ======================================== */
+    .approach-selector {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+      z-index: 1000;
+    }
+
+    .approach-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      background: transparent;
+      border: 1px solid rgba(245, 242, 237, 0.12);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 3px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .approach-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-primary);
+    }
+
+    .approach-btn.active {
+      border-color: var(--text-muted);
+      color: var(--text-primary);
+      background: rgba(245, 242, 237, 0.03);
+    }
+
+    /* ========================================
+       MAIN CONTENT
+    ======================================== */
+    .approach-container {
+      display: none;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 48px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .approach-container.active {
+      display: flex;
+    }
+
+    .approach-inner {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    /* ========================================
+       APPROACH 1: TEMPORAL FADE
+    ======================================== */
+    #approach-1 .main-question {
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 48px;
+      transition: opacity 0.6s ease, color var(--transition-backdrop);
+    }
+
+    #approach-1 .main-question.hidden {
+      opacity: 0;
+    }
+
+    #approach-1 .input-line {
+      border-bottom: 1px solid rgba(245, 242, 237, 0.12);
+      padding-bottom: 12px;
+      margin-bottom: 40px;
+    }
+
+    #approach-1 input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'EB Garamond', serif;
+      font-size: 24px;
+      color: var(--text-primary);
+      text-align: center;
+      transition: color var(--transition-backdrop);
+    }
+
+    #approach-1 input::placeholder {
+      color: var(--text-muted);
+      transition: color var(--transition-backdrop);
+    }
+
+    #approach-1 .whisper-links {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.8s ease;
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    #approach-1 .whisper-links.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #approach-1 .whisper-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245, 242, 237, 0.15);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    #approach-1 .whisper-links a:hover {
+      border-color: var(--text-muted);
+    }
+
+    #approach-1 .question-wrapper {
+      position: relative;
+      min-height: 50px;
+      margin-bottom: 48px;
+    }
+
+    #approach-1 .transformed-question {
+      font-size: 28px;
+      font-style: italic;
+      color: var(--text-muted);
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      transition: opacity 0.6s ease, color var(--transition-backdrop);
+    }
+
+    #approach-1 .transformed-question.visible {
+      opacity: 1;
+    }
+
+    /* ========================================
+       APPROACH 2: PLACEHOLDER CYCLE
+    ======================================== */
+    #approach-2 .main-question {
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 48px;
+      transition: color var(--transition-backdrop);
+    }
+
+    #approach-2 .input-line {
+      border-bottom: 1px solid rgba(245, 242, 237, 0.12);
+      padding-bottom: 12px;
+    }
+
+    #approach-2 input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'EB Garamond', serif;
+      font-size: 22px;
+      color: var(--text-primary);
+      text-align: center;
+      transition: color var(--transition-backdrop);
+    }
+
+    #approach-2 input::placeholder {
+      color: var(--text-muted);
+      transition: opacity 0.4s ease, color var(--transition-backdrop);
+    }
+
+    #approach-2 .placeholder-fading::placeholder {
+      opacity: 0;
+    }
+
+    /* ========================================
+       BACKDROP ANCHORS (Ambient Selector)
+    ======================================== */
+    .backdrop-anchors {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      font-family: 'EB Garamond', serif;
+      font-size: 13px;
+      font-style: italic;
+      letter-spacing: 0.02em;
+      z-index: 1000;
+    }
+
+    .backdrop-anchor {
+      color: var(--text-muted);
+      opacity: 0.4;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      padding: 4px 2px;
+      border-bottom: 1px solid transparent;
+    }
+
+    .backdrop-anchor:hover {
+      opacity: 0.7;
+    }
+
+    .backdrop-anchor.active {
+      opacity: 1;
+      color: var(--text-primary);
+      border-bottom-color: var(--text-muted);
+    }
+
+    .backdrop-separator {
+      color: var(--text-muted);
+      opacity: 0.2;
+      user-select: none;
+    }
+
+    /* ========================================
+       DESCRIPTION PANEL
+    ======================================== */
+    .approach-description {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 480px;
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding: 20px 28px;
+      background: rgba(20, 20, 20, 0.8);
+      border: 1px solid rgba(245, 242, 237, 0.08);
+      border-radius: 6px;
+      opacity: 0;
+      animation: fadeInUp 0.5s ease forwards 0.3s;
+      transition: color var(--transition-backdrop);
+      z-index: 100;
+    }
+
+    .approach-description h4 {
+      font-family: 'EB Garamond', serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      transition: color var(--transition-backdrop);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    .reset-hint {
+      position: fixed;
+      bottom: 180px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.4;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+    }
+
+    .reset-hint:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Approach Selector -->
+  <nav class="approach-selector">
+    <button class="approach-btn active" data-approach="1">1. Temporal Fade</button>
+    <button class="approach-btn" data-approach="2">2. Placeholder Cycle</button>
+  </nav>
+
+  <!-- ========================================
+       APPROACH 1: TEMPORAL FADE
+  ======================================== -->
+  <div id="approach-1" class="approach-container active">
+    <div class="approach-inner">
+      <div class="question-wrapper">
+        <div class="main-question" id="a1-main-question">Where are you at?</div>
+        <div class="transformed-question" id="a1-transformed"></div>
+      </div>
+      <div class="input-line">
+        <input type="text" placeholder="" id="a1-input">
+      </div>
+      <div class="whisper-links" id="a1-whispers">
+        Start from a <a data-gate="story">story</a>, a <a data-gate="virtue">virtue</a>, or a <a data-gate="verse">verse</a>.
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
+       APPROACH 2: PLACEHOLDER CYCLE
+  ======================================== -->
+  <div id="approach-2" class="approach-container">
+    <div class="approach-inner">
+      <div class="main-question">Where are you at?</div>
+      <div class="input-line">
+        <input type="text" placeholder="A story that stayed with you..." id="a2-input">
+      </div>
+    </div>
+  </div>
+
+  <!-- Descriptions -->
+  <div class="approach-description" id="desc-1">
+    <h4>Temporal Fade</h4>
+    After 2 seconds of silence, whisper-links fade in. Click one to transform the question.
+  </div>
+  <div class="approach-description" id="desc-2" style="display: none;">
+    <h4>Placeholder Cycle</h4>
+    The placeholder gently cycles every 4 seconds—framing possibilities without adding UI.
+  </div>
+
+  <div class="reset-hint" id="reset-hint">Click to reset</div>
+
+  <!-- Backdrop Anchors -->
+  <div class="backdrop-anchors">
+    <span class="backdrop-anchor active" data-backdrop="stone">stone</span>
+    <span class="backdrop-separator">·</span>
+    <span class="backdrop-anchor" data-backdrop="forest">forest</span>
+    <span class="backdrop-separator">·</span>
+    <span class="backdrop-anchor" data-backdrop="paper">paper</span>
+    <span class="backdrop-separator">·</span>
+    <span class="backdrop-anchor" data-backdrop="mist">mist</span>
+  </div>
+
+  <script>
+    const approachBtns = document.querySelectorAll('.approach-btn');
+    const containers = document.querySelectorAll('.approach-container');
+    const descriptions = document.querySelectorAll('.approach-description');
+    const backdropAnchors = document.querySelectorAll('.backdrop-anchor');
+
+    let currentApproach = 1;
+    let approach1Timer = null;
+    let approach2Interval = null;
+
+    // Backdrop setter
+    function setBackdrop(name) {
+      document.documentElement.setAttribute('data-backdrop', name);
+      backdropAnchors.forEach(a => {
+        a.classList.toggle('active', a.dataset.backdrop === name);
+      });
+    }
+
+    // Backdrop anchor clicks
+    backdropAnchors.forEach(anchor => {
+      anchor.addEventListener('click', () => {
+        setBackdrop(anchor.dataset.backdrop);
+      });
+    });
+
+    function switchApproach(num) {
+      currentApproach = num;
+      
+      approachBtns.forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`[data-approach="${num}"]`).classList.add('active');
+      
+      containers.forEach(c => c.classList.remove('active'));
+      document.getElementById(`approach-${num}`).classList.add('active');
+      
+      descriptions.forEach(d => d.style.display = 'none');
+      const desc = document.getElementById(`desc-${num}`);
+      desc.style.display = 'block';
+      desc.style.animation = 'none';
+      desc.offsetHeight;
+      desc.style.animation = 'fadeInUp 0.5s ease forwards';
+      
+      resetApproach(num);
+      initApproach(num);
+    }
+
+    approachBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        switchApproach(parseInt(btn.dataset.approach));
+      });
+    });
+
+    // ==========================================
+    // APPROACH 1: TEMPORAL FADE
+    // ==========================================
+    function initApproach1() {
+      const whispers = document.getElementById('a1-whispers');
+      const mainQ = document.getElementById('a1-main-question');
+      const transformed = document.getElementById('a1-transformed');
+      const input = document.getElementById('a1-input');
+      
+      whispers.classList.remove('visible');
+      mainQ.classList.remove('hidden');
+      transformed.classList.remove('visible');
+      transformed.textContent = '';
+      input.value = '';
+      input.placeholder = '';
+      
+      approach1Timer = setTimeout(() => {
+        whispers.classList.add('visible');
+      }, 2000);
+      
+      const links = whispers.querySelectorAll('a');
+      links.forEach(link => {
+        link.onclick = (e) => {
+          e.preventDefault();
+          const gate = link.dataset.gate;
+          let newQuestion = '';
+          let newPlaceholder = '';
+          
+          switch(gate) {
+            case 'story':
+              newQuestion = 'A story that stayed with you?';
+              newPlaceholder = 'A film, a novel, a myth...';
+              break;
+            case 'virtue':
+              newQuestion = 'A struggle of the heart?';
+              newPlaceholder = 'Patience, courage, forgiveness...';
+              break;
+            case 'verse':
+              newQuestion = "A text you're opening?";
+              newPlaceholder = 'A passage, a chapter, a phrase...';
+              break;
+          }
+          
+          transformed.textContent = newQuestion;
+          mainQ.classList.add('hidden');
+          transformed.classList.add('visible');
+          input.placeholder = newPlaceholder;
+          input.focus();
+        };
+      });
+    }
+
+    // ==========================================
+    // APPROACH 2: PLACEHOLDER CYCLE
+    // ==========================================
+    const placeholders = [
+      "A story that stayed with you...",
+      "A struggle of the heart...",
+      "A text you're opening..."
+    ];
+    let placeholderIndex = 0;
+
+    function initApproach2() {
+      const input = document.getElementById('a2-input');
+      placeholderIndex = 0;
+      input.placeholder = placeholders[0];
+      input.value = '';
+      
+      if (approach2Interval) clearInterval(approach2Interval);
+      
+      approach2Interval = setInterval(() => {
+        if (currentApproach !== 2) return;
+        
+        input.classList.add('placeholder-fading');
+        
+        setTimeout(() => {
+          placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+          input.placeholder = placeholders[placeholderIndex];
+          input.classList.remove('placeholder-fading');
+        }, 400);
+      }, 4000);
+    }
+
+    // ==========================================
+    // RESET & INIT
+    // ==========================================
+    function resetApproach(num) {
+      if (approach1Timer) {
+        clearTimeout(approach1Timer);
+        approach1Timer = null;
+      }
+      if (approach2Interval) {
+        clearInterval(approach2Interval);
+        approach2Interval = null;
+      }
+    }
+
+    function initApproach(num) {
+      if (num === 1) initApproach1();
+      if (num === 2) initApproach2();
+    }
+
+    document.getElementById('reset-hint').addEventListener('click', () => {
+      resetApproach(currentApproach);
+      initApproach(currentApproach);
+    });
+
+    initApproach1();
+  </script>
+
+</body>
+</html>
