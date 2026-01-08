@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en" data-backdrop="paper">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BRjournal — Journey Map</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================
+       BACKDROP SYSTEM (from BibleSherpa)
+    ======================================== */
+    :root {
+      --transition-backdrop: 3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-quick: 0.3s ease;
+      --transition-medium: 0.6s ease;
+    }
+
+    /* Paper - Study, Scripture, Historical (default for JourneyMap) */
+    html[data-backdrop="paper"] {
+      --bg-primary: #1c1a17;
+      --bg-secondary: #242220;
+      --bg-elevated: #2a2826;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(28, 26, 23, 0.94) 0%, rgba(24, 22, 19, 0.96) 100%);
+      --text-primary: #ede6db;
+      --text-secondary: #c4b9a8;
+      --text-muted: rgba(212, 196, 168, 0.5);
+      --text-whisper: rgba(212, 196, 168, 0.3);
+      --accent-warm: #d4a574;
+      --accent-glow: rgba(180, 160, 120, 0.02);
+      --border-subtle: rgba(212, 196, 168, 0.08);
+      --border-visible: rgba(212, 196, 168, 0.15);
+    }
+
+    /* Stone - Reality, Active Reading */
+    html[data-backdrop="stone"] {
+      --bg-primary: #161616;
+      --bg-secondary: #1e1e1e;
+      --bg-elevated: #252525;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(22, 22, 22, 0.97) 0%, rgba(18, 18, 18, 0.98) 100%);
+      --text-primary: #e8e4df;
+      --text-secondary: #a8a4a0;
+      --text-muted: rgba(232, 228, 223, 0.5);
+      --text-whisper: rgba(232, 228, 223, 0.25);
+      --accent-warm: #b8a088;
+      --accent-glow: transparent;
+      --border-subtle: rgba(245, 242, 237, 0.06);
+      --border-visible: rgba(245, 242, 237, 0.12);
+    }
+
+    /* Forest - Completed, Growth */
+    html[data-backdrop="forest"] {
+      --bg-primary: #0f1a14;
+      --bg-secondary: #152018;
+      --bg-elevated: #1a261d;
+      --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      --bg-overlay: linear-gradient(180deg, rgba(15, 26, 20, 0.95) 0%, rgba(18, 32, 24, 0.97) 50%, rgba(12, 22, 16, 0.98) 100%);
+      --text-primary: #d4e0d9;
+      --text-secondary: #92b0a1;
+      --text-muted: rgba(146, 176, 161, 0.5);
+      --text-whisper: rgba(146, 176, 161, 0.3);
+      --accent-warm: #7a9988;
+      --accent-glow: rgba(92, 122, 107, 0.02);
+      --border-subtle: rgba(146, 176, 161, 0.08);
+      --border-visible: rgba(146, 176, 161, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: 
+        background-color var(--transition-backdrop),
+        color var(--transition-backdrop);
+    }
+
+    /* Textured background layer */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: var(--bg-texture);
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Gradient overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-overlay);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ========================================
+       APP CONTAINER
+    ======================================== */
+    .app-container {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ========================================
+       THEME BANNER (Primary Header)
+    ======================================== */
+    .theme-banner {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: linear-gradient(
+        180deg,
+        var(--bg-primary) 0%,
+        rgba(28, 26, 23, 0.95) 100%
+      );
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-btn {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 8px 4px;
+      transition: color var(--transition-quick), opacity var(--transition-quick);
+      opacity: 0.7;
+    }
+
+    .header-btn:hover {
+      color: var(--text-secondary);
+      opacity: 1;
+    }
+
+    .settings-btn::before {
+      content: '⚙';
+      margin-right: 4px;
+      font-style: normal;
+    }
+
+    .theme-text {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--text-primary);
+      text-align: center;
+      flex: 1;
+      padding: 0 16px;
+      letter-spacing: 0.01em;
+    }
+
+    /* ========================================
+       JOURNEY HEADER (Secondary - Narrative)
+    ======================================== */
+    .journey-header {
+      padding: 12px 20px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .journey-narrative {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 15px;
+      font-style: italic;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .journey-narrative::before {
+      content: 'from ';
+      opacity: 0.6;
+    }
+
+    /* ========================================
+       BOOKS CONTAINER
+    ======================================== */
+    .books-container {
+      flex: 1;
+      padding: 16px 16px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ========================================
+       BOOK CARD
+    ======================================== */
+    .book-card {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: 
+        background-color var(--transition-quick),
+        box-shadow var(--transition-quick);
+    }
+
+    .book-card.active {
+      background: var(--bg-elevated);
+      box-shadow: 
+        0 0 0 1px var(--border-visible),
+        0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .book-card.completed {
+      opacity: 0.7;
+    }
+
+    /* Book Header */
+    .book-header {
+      display: flex;
+      align-items: flex-start;
+      padding: 16px;
+      cursor: pointer;
+      gap: 12px;
+    }
+
+    .book-marker {
+      width: 4px;
+      height: 40px;
+      background: var(--border-subtle);
+      border-radius: 2px;
+      flex-shrink: 0;
+      transition: background-color var(--transition-quick);
+    }
+
+    .book-card.active .book-marker {
+      background: var(--accent-warm);
+    }
+
+    .book-card.completed .book-marker {
+      background: var(--text-muted);
+    }
+
+    .book-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .book-name {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      letter-spacing: 0.01em;
+    }
+
+    .book-theme {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    /* Progress Bar */
+    .book-progress {
+      height: 2px;
+      background: var(--border-subtle);
+      border-radius: 1px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .book-progress-fill {
+      height: 100%;
+      background: var(--accent-warm);
+      border-radius: 1px;
+      transition: width 0.6s ease;
+    }
+
+    .book-card.completed .book-progress-fill {
+      background: var(--text-muted);
+    }
+
+    /* Expand Button */
+    .expand-btn {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      opacity: 0.5;
+      transition: opacity var(--transition-quick);
+    }
+
+    .expand-btn:hover {
+      opacity: 1;
+    }
+
+    /* ========================================
+       BOOK SECTIONS (Chapters)
+    ======================================== */
+    .book-sections {
+      padding: 0 16px 16px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Chapter Section */
+    .chapter-section {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      position: relative;
+    }
+
+    /* Timeline indicator */
+    .section-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 16px;
+      flex-shrink: 0;
+    }
+
+    .section-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border-subtle);
+      border: 2px solid var(--bg-secondary);
+      transition: all var(--transition-quick);
+      z-index: 2;
+    }
+
+    .chapter-section.current .section-dot {
+      background: var(--accent-warm);
+      box-shadow: 0 0 8px rgba(212, 165, 116, 0.4);
+    }
+
+    .chapter-section.completed .section-dot {
+      background: var(--text-muted);
+    }
+
+    .chapter-section.paused .section-dot {
+      background: var(--accent-warm);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .section-line {
+      width: 1px;
+      flex: 1;
+      min-height: 24px;
+      background: var(--border-subtle);
+    }
+
+    .chapter-section:last-child .section-line {
+      display: none;
+    }
+
+    /* Section Content */
+    .section-content {
+      flex: 1;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 4px 0 20px;
+      gap: 12px;
+    }
+
+    .section-reference {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 16px;
+      color: var(--text-secondary);
+      transition: color var(--transition-quick);
+    }
+
+    .chapter-section.current .section-reference {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .chapter-section.completed .section-reference {
+      color: var(--text-muted);
+    }
+
+    /* Action Buttons */
+    .section-action {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-quick);
+      opacity: 0;
+      transform: translateX(8px);
+    }
+
+    .chapter-section:hover .section-action,
+    .chapter-section.current .section-action,
+    .chapter-section.paused .section-action {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .section-action.start {
+      background: var(--accent-warm);
+      color: var(--bg-primary);
+    }
+
+    .section-action.start:hover {
+      filter: brightness(1.1);
+    }
+
+    .section-action.continue {
+      background: transparent;
+      border: 1px solid var(--accent-warm);
+      color: var(--accent-warm);
+    }
+
+    .section-action.continue::before {
+      content: '⏸ ';
+    }
+
+    .section-action.review {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border-visible);
+    }
+
+    .section-action.review:hover {
+      color: var(--text-secondary);
+      border-color: var(--text-muted);
+    }
+
+    .section-action.read {
+      background: transparent;
+      color: var(--text-whisper);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .section-action.read:hover {
+      color: var(--text-muted);
+      border-color: var(--border-visible);
+    }
+
+    /* Nested Psalm */
+    .nested-psalm {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0 16px 28px;
+      margin-top: -12px;
+    }
+
+    .psalm-dash {
+      color: var(--text-whisper);
+      font-size: 12px;
+    }
+
+    .psalm-reference {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    /* ========================================
+       BACKDROP ANCHORS (Bottom Navigation)
+    ======================================== */
+    .backdrop-anchors {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      font-family: 'EB Garamond', serif;
+      font-size: 12px;
+      font-style: italic;
+      letter-spacing: 0.02em;
+      z-index: 1000;
+      padding: 8px 16px;
+      background: rgba(28, 26, 23, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .backdrop-anchor {
+      color: var(--text-muted);
+      opacity: 0.4;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      padding: 4px 2px;
+      border-bottom: 1px solid transparent;
+    }
+
+    .backdrop-anchor:hover {
+      opacity: 0.7;
+    }
+
+    .backdrop-anchor.active {
+      opacity: 1;
+      color: var(--text-primary);
+      border-bottom-color: var(--text-muted);
+    }
+
+    .backdrop-separator {
+      color: var(--text-muted);
+      opacity: 0.2;
+      user-select: none;
+    }
+
+    /* ========================================
+       WHISPER HINT (Delayed appearance)
+    ======================================== */
+    .whisper-hint {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--text-whisper);
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .whisper-hint.visible {
+      opacity: 1;
+    }
+
+    /* ========================================
+       RESPONSIVE ADJUSTMENTS
+    ======================================== */
+    @media (max-width: 380px) {
+      .theme-text {
+        font-size: 16px;
+      }
+      
+      .book-name {
+        font-size: 18px;
+      }
+      
+      .section-reference {
+        font-size: 15px;
+      }
+    }
+
+    /* ========================================
+       ENTRY ANIMATIONS
+    ======================================== */
+    .book-card {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .book-card:nth-child(1) { animation-delay: 0.1s; }
+    .book-card:nth-child(2) { animation-delay: 0.2s; }
+    .book-card:nth-child(3) { animation-delay: 0.3s; }
+    .book-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .theme-banner {
+      opacity: 0;
+      animation: fadeIn 0.8s ease 0.05s forwards;
+    }
+
+    .journey-header {
+      opacity: 0;
+      animation: fadeIn 0.8s ease 0.15s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .backdrop-anchors {
+      opacity: 0;
+      animation: fadeIn 1s ease 1s forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Theme Banner (Primary Header) -->
+    <header class="theme-banner">
+      <button class="header-btn settings-btn">settings</button>
+      <span class="theme-text">The Rhythm of Redemption</span>
+      <button class="header-btn today-btn">today</button>
+    </header>
+
+    <!-- Journey Header (Narrative Context) -->
+    <div class="journey-header">
+      <p class="journey-narrative">The Shawshank Redemption</p>
+    </div>
+
+    <!-- Books Container -->
+    <main class="books-container">
+      
+      <!-- Book 1: Completed -->
+      <article class="book-card completed">
+        <div class="book-header" onclick="toggleBook(this)">
+          <div class="book-marker"></div>
+          <div class="book-info">
+            <h2 class="book-name">Genesis</h2>
+            <p class="book-theme">The promise of deliverance amid the fall</p>
+            <div class="book-progress">
+              <div class="book-progress-fill" style="width: 100%"></div>
+            </div>
+          </div>
+          <button class="expand-btn">∨</button>
+        </div>
+        <div class="book-sections" style="display: none;">
+          <div class="chapter-section completed">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+              <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Genesis 1–11</span>
+              <button class="section-action review">Review</button>
+            </div>
+          </div>
+          <div class="chapter-section completed">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+              <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Genesis 12–25</span>
+              <button class="section-action review">Review</button>
+            </div>
+          </div>
+          <div class="chapter-section completed">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Genesis 26–50</span>
+              <button class="section-action review">Review</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Book 2: Active with current section -->
+      <article class="book-card active">
+        <div class="book-header" onclick="toggleBook(this)">
+          <div class="book-marker"></div>
+          <div class="book-info">
+            <h2 class="book-name">Exodus</h2>
+            <p class="book-theme">Liberation from bondage through divine intervention</p>
+            <div class="book-progress">
+              <div class="book-progress-fill" style="width: 33%"></div>
+            </div>
+          </div>
+          <button class="expand-btn">∧</button>
+        </div>
+        <div class="book-sections">
+          <div class="chapter-section completed">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+              <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Exodus 1–4</span>
+              <button class="section-action review">Review</button>
+            </div>
+          </div>
+          <div class="chapter-section current">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+              <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Exodus 5–11</span>
+              <button class="section-action start">Start</button>
+            </div>
+          </div>
+          <div class="chapter-section upcoming">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+              <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Exodus 12–18</span>
+              <button class="section-action read">Read</button>
+            </div>
+          </div>
+          <div class="chapter-section upcoming">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+              <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Exodus 19–24</span>
+              <button class="section-action read">Read</button>
+            </div>
+          </div>
+          <div class="chapter-section upcoming">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Exodus 25–40</span>
+              <button class="section-action read">Read</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Book 3: Upcoming -->
+      <article class="book-card">
+        <div class="book-header" onclick="toggleBook(this)">
+          <div class="book-marker"></div>
+          <div class="book-info">
+            <h2 class="book-name">Psalms</h2>
+            <p class="book-theme">Songs of lament and hope in the waiting</p>
+            <div class="book-progress">
+              <div class="book-progress-fill" style="width: 0%"></div>
+            </div>
+          </div>
+          <button class="expand-btn">∨</button>
+        </div>
+        <div class="book-sections" style="display: none;">
+          <div class="chapter-section upcoming">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+              <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Psalm 1–41</span>
+              <button class="section-action read">Read</button>
+            </div>
+          </div>
+          <div class="chapter-section upcoming">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Psalm 42–72</span>
+              <button class="section-action read">Read</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Book 4: Upcoming -->
+      <article class="book-card">
+        <div class="book-header" onclick="toggleBook(this)">
+          <div class="book-marker"></div>
+          <div class="book-info">
+            <h2 class="book-name">Romans</h2>
+            <p class="book-theme">The theology of freedom in Christ</p>
+            <div class="book-progress">
+              <div class="book-progress-fill" style="width: 0%"></div>
+            </div>
+          </div>
+          <button class="expand-btn">∨</button>
+        </div>
+        <div class="book-sections" style="display: none;">
+          <div class="chapter-section upcoming">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+              <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Romans 1–4</span>
+              <button class="section-action read">Read</button>
+            </div>
+          </div>
+          <div class="chapter-section upcoming">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+              <div class="section-line"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Romans 5–8</span>
+              <button class="section-action read">Read</button>
+            </div>
+          </div>
+          <div class="chapter-section upcoming">
+            <div class="section-indicator">
+              <div class="section-dot"></div>
+            </div>
+            <div class="section-content">
+              <span class="section-reference">Romans 9–16</span>
+              <button class="section-action read">Read</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- Whisper Hint -->
+    <div class="whisper-hint" id="whisper-hint">
+      tap a section to begin reading
+    </div>
+
+    <!-- Backdrop Anchors -->
+    <nav class="backdrop-anchors">
+      <span class="backdrop-anchor" data-backdrop="stone">stone</span>
+      <span class="backdrop-separator">·</span>
+      <span class="backdrop-anchor" data-backdrop="forest">forest</span>
+      <span class="backdrop-separator">·</span>
+      <span class="backdrop-anchor active" data-backdrop="paper">paper</span>
+    </nav>
+
+  </div>
+
+  <script>
+    // Toggle book expansion
+    function toggleBook(header) {
+      const card = header.closest('.book-card');
+      const sections = card.querySelector('.book-sections');
+      const btn = card.querySelector('.expand-btn');
+      
+      if (sections.style.display === 'none') {
+        sections.style.display = 'flex';
+        btn.textContent = '∧';
+      } else {
+        sections.style.display = 'none';
+        btn.textContent = '∨';
+      }
+    }
+
+    // Backdrop switching
+    const backdropAnchors = document.querySelectorAll('.backdrop-anchor');
+    
+    backdropAnchors.forEach(anchor => {
+      anchor.addEventListener('click', () => {
+        const backdrop = anchor.dataset.backdrop;
+        document.documentElement.setAttribute('data-backdrop', backdrop);
+        
+        backdropAnchors.forEach(a => a.classList.remove('active'));
+        anchor.classList.add('active');
+      });
+    });
+
+    // Delayed whisper hint
+    setTimeout(() => {
+      document.getElementById('whisper-hint').classList.add('visible');
+    }, 3000);
+
+    // Hide whisper on scroll
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      document.getElementById('whisper-hint').classList.remove('visible');
+      
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        document.getElementById('whisper-hint').classList.add('visible');
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
