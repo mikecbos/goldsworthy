@@ -10,12 +10,12 @@
     />
     <style>
       :root {
-        --warm-bg: #f7f3ee;
-        --ink: #2c2a26;
-        --ink-soft: #6b6760;
-        --ink-faint: #a8a49d;
-        --parchment: #ede8e0;
-        --line: #d4cfc6;
+        --warm-bg: #121312;
+        --ink: #f2ede4;
+        --ink-soft: #c7c1b4;
+        --ink-faint: #908a7e;
+        --parchment: #1f1e1b;
+        --line: #3a3833;
       }
       * {
         margin: 0;
@@ -186,6 +186,7 @@
         border-top: none;
         border-radius: 0 0 4px 4px;
         padding: 1rem 1.2rem 1.1rem;
+        color: var(--ink);
       }
       .card-body .description {
         font-size: 0.82rem;
@@ -288,24 +289,24 @@
         letter-spacing: 0.03em;
       }
       .node-tag.publication {
-        background: #d1e8df;
-        color: #0f6e56;
+        background: #1d3a32;
+        color: #7fd4b8;
       }
       .node-tag.scholar {
-        background: #ddd8ee;
-        color: #534ab7;
+        background: #2a2547;
+        color: #b6aff0;
       }
       .node-tag.text {
-        background: #d4e5f7;
-        color: #185fa5;
+        background: #14304a;
+        color: #82bff0;
       }
       .node-tag.claim {
-        background: #f5d5d5;
-        color: #a32d2d;
+        background: #3d1818;
+        color: #f0a0a0;
       }
       .node-tag.criterion {
-        background: #f5e6cc;
-        color: #854f0b;
+        background: #3a2912;
+        color: #f0c98a;
       }
       .query-list {
         list-style: none;
@@ -461,7 +462,7 @@
 
     <header>
       <div class="breadcrumb">
-        <a href="https://scripturestory.org">scripturestory</a> · history
+        <a href="https://scripturestory.org">scripturestory</a> · <a href="index.html">history</a>
       </div>
       <h1>Who was Jesus <em>to them?</em></h1>
     </header>
@@ -765,11 +766,11 @@
       <div class="paths">
         <a href="https://scripturestory.org">scripturestory</a>
         <span class="dot">·</span>
-        <a href="#">about</a>
+        <a href="index.html">history</a>
         <span class="dot">·</span>
-        <a href="#">methodology</a>
+        <a href="watch.html">watch the debate</a>
         <span class="dot">·</span>
-        <a href="#">provenance</a>
+        <a href="graph.html">explore the graph</a>
       </div>
     </footer>
 
@@ -789,7 +790,21 @@
           .forEach((el) => el.classList.remove("active"));
         document.getElementById("persona-grid").classList.remove("collapsed");
         document.getElementById("stats-section").style.display = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
+
+      // Wire query-list items to watch.html with persona context
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".persona-expanded").forEach((view) => {
+          const persona = view.id.replace("-view", "");
+          view.querySelectorAll(".query-list li").forEach((li, i) => {
+            li.addEventListener("click", () => {
+              window.location.href =
+                "watch.html?persona=" + persona + "&q=" + i;
+            });
+          });
+        });
+      });
     </script>
   </body>
 </html>

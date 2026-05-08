@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>John 1:1-18 · concept divergence · history</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --warm-bg: #121312;
+  --ink: #f2ede4;
+  --ink-soft: #c7c1b4;
+  --ink-faint: #908a7e;
+  --parchment: #1f1e1b;
+  --line: #3a3833;
+  --ehc: #7fd4b8;
+  --ehc-bg: #1d3a32;
+  --ehc-bar: #2a9d76;
+  --dev: #b6aff0;
+  --dev-bg: #2a2547;
+  --dev-bar: #7c6fd4;
+  --text-tag: #82bff0;
+  --text-bg: #14304a;
+  --concept-tag: #f0c98a;
+  --concept-bg: #3a2912;
+  --stance-tag: #f0a0a0;
+  --stance-bg: #3d1818;
+  --arbiter-line: #5e564a;
+  --step-burgundy: #d47878;
+  --step-gold: #d6b06a;
+  --step-green: #7ab89a;
+  --step-neutral: #b0aba0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--warm-bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+.grain {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 100;
+}
+
+/* ---- NAV ---- */
+.top-nav {
+  padding: 1.4rem 2rem 0;
+  max-width: 56rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.back-to-video {
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  text-decoration: none;
+  transition: color 0.2s;
+  letter-spacing: 0.02em;
+}
+.back-to-video:hover { color: var(--ink); }
+.breadcrumb-trail {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.breadcrumb-trail a {
+  color: var(--ink-faint);
+  text-decoration: none;
+}
+.breadcrumb-trail span { margin: 0 0.4rem; opacity: 0.4; }
+
+/* ---- MAIN ---- */
+.graph-view {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 4rem;
+}
+
+/* ---- TEXT HEADER ---- */
+.text-header {
+  margin-bottom: 2rem;
+  animation: fadeUp 0.6s ease-out;
+}
+.text-ref {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+.text-subtitle {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  font-weight: 300;
+  line-height: 1.5;
+  max-width: 36rem;
+}
+.layer-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border: 1px solid var(--line);
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  margin-top: 0.6rem;
+}
+
+/* ---- ASYMMETRY BAR ---- */
+.asymmetry-section {
+  margin-bottom: 2.2rem;
+  animation: fadeUp 0.6s ease-out 0.2s both;
+}
+.asymmetry-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.7rem;
+}
+.asymmetry-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+.camp-count {
+  font-size: 0.72rem;
+  font-weight: 500;
+  min-width: 5rem;
+  text-align: right;
+}
+.camp-count.ehc { color: var(--ehc); text-align: right; }
+.camp-count.dev { color: var(--dev); text-align: left; }
+
+.asymmetry-bar {
+  flex: 1;
+  height: 28px;
+  background: var(--parchment);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+.bar-ehc {
+  width: 76.5%;
+  background: var(--ehc-bar);
+  opacity: 0.7;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bar-dev {
+  width: 23.5%;
+  background: var(--dev-bar);
+  opacity: 0.7;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bar-ehc:hover, .bar-dev:hover { opacity: 1; }
+.bar-label {
+  font-size: 0.6rem;
+  color: white;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+.asymmetry-note {
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  font-style: italic;
+  font-family: "Cormorant Garamond", serif;
+}
+
+/* ---- CONCEPT DIVERGENCE ---- */
+.divergence-section {
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.6s ease-out 0.4s both;
+}
+.divergence-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.8rem;
+}
+
+.divergence-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.div-col-header {
+  padding: 0.6rem 1rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.div-col-header.ehc { background: var(--ehc-bg); color: var(--ehc); }
+.div-col-header.shared { background: var(--parchment); color: var(--ink-faint); }
+.div-col-header.dev { background: var(--dev-bg); color: var(--dev); }
+
+.div-col {
+  padding: 0.8rem 1rem;
+  background: #181715;
+}
+.div-col.ehc-col { border-right: 1px solid var(--line); }
+.div-col.shared-col {
+  background: var(--parchment);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.div-col.dev-col { }
+
+.concept-pill {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.84rem;
+  padding: 0.4rem 0.65rem;
+  margin-bottom: 0.35rem;
+  border-radius: 3px;
+  line-height: 1.3;
+  cursor: default;
+  transition: transform 0.2s;
+}
+.concept-pill:hover { transform: translateX(3px); }
+
+.concept-pill.ehc-only {
+  background: var(--ehc-bg);
+  color: var(--ehc);
+  border-left: 3px solid var(--ehc-bar);
+}
+.concept-pill.shared {
+  background: var(--parchment);
+  color: var(--ink-soft);
+  border-left: 3px solid var(--line);
+  text-align: center;
+}
+.concept-pill.dev-only {
+  background: var(--dev-bg);
+  color: var(--dev);
+  border-left: 3px solid var(--dev-bar);
+}
+
+.concept-count {
+  font-size: 0.6rem;
+  color: var(--ink-faint);
+  margin-top: 0.2rem;
+  font-weight: 300;
+}
+
+/* ---- SCHOLAR LIST ---- */
+.scholars-section {
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.6s ease-out 0.6s both;
+}
+.scholars-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.7rem;
+}
+.scholar-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1.5rem;
+}
+.scholar-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px dotted var(--line);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: color 0.2s, padding-left 0.2s;
+}
+.scholar-row:hover {
+  color: var(--ink);
+  padding-left: 0.3rem;
+}
+.scholar-camp {
+  font-size: 0.55rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 2px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.scholar-camp.ehc { background: var(--ehc-bg); color: var(--ehc); }
+.scholar-camp.dev { background: var(--dev-bg); color: var(--dev); }
+.scholar-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.88rem;
+}
+.scholar-detail {
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ---- ARBITER FRAMEWORK CARD ---- */
+.framework-card {
+  background: var(--parchment);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 2rem;
+  animation: fadeUp 0.8s ease-out 1s both;
+}
+.framework-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.step {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 0.9rem;
+  align-items: flex-start;
+}
+.step-number {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+.step-number.burgundy { background: var(--step-burgundy); }
+.step-number.gold { background: var(--step-gold); }
+.step-number.green { background: var(--step-green); }
+.step-number.neutral { background: var(--step-neutral); }
+
+.step-content {
+  flex: 1;
+}
+.step-label {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.step-label.burgundy { color: var(--step-burgundy); }
+.step-label.gold { color: var(--step-gold); }
+.step-label.green { color: var(--step-green); }
+.step-label.neutral { color: var(--step-neutral); }
+
+.step-text {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  font-weight: 300;
+}
+.step-text em {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  color: var(--ink);
+  font-size: 0.84rem;
+}
+
+/* ---- ARBITER CLOSING ---- */
+.arbiter-closing {
+  border-left: 3px solid var(--arbiter-line);
+  padding: 1rem 1.2rem;
+  margin-bottom: 2rem;
+  animation: fadeUp 0.8s ease-out 1.4s both;
+}
+.arbiter-closing p {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* ---- PIVOT LINKS ---- */
+.pivot-section {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  animation: fadeUp 0.6s ease-out 1.6s both;
+}
+.pivot-card {
+  flex: 1;
+  min-width: 14rem;
+  padding: 1rem 1.2rem;
+  background: #1a1917;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.pivot-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(44, 42, 38, 0.1);
+}
+.pivot-icon {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.4rem;
+}
+.pivot-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+.pivot-desc {
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .divergence-grid { grid-template-columns: 1fr; }
+  .div-col.shared-col { border-right: none; border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); }
+  .div-col.ehc-col { border-right: none; border-bottom: 1px solid var(--line); }
+  .scholar-grid { grid-template-columns: 1fr; }
+  .pivot-section { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<!-- NAV -->
+<div class="top-nav">
+  <a class="back-to-video" href="watch.html?persona=archaeologist">← back to video · John 1:1 segment</a>
+  <div class="breadcrumb-trail">
+    <a href="history.html">history</a>
+    <span>·</span>
+    <a href="watch.html?persona=archaeologist">archaeologist</a>
+    <span>·</span>
+    John 1:1-18
+  </div>
+</div>
+
+<div class="graph-view">
+
+  <!-- TEXT HEADER -->
+  <div class="text-header">
+    <div class="text-ref">John 1:1-18</div>
+    <div class="text-subtitle">
+      The Prologue — "In the beginning was the Word, and the Word was with God,
+      and the Word was God." The most-cited text in the early Christology debate.
+      Both camps engage it; they see different things.
+    </div>
+    <div class="layer-badge">Layer 2 · concept divergence</div>
+  </div>
+
+  <!-- ASYMMETRY BAR -->
+  <div class="asymmetry-section">
+    <div class="asymmetry-label">Who cites this text?</div>
+    <div class="asymmetry-bar-container">
+      <div class="camp-count ehc">13 EHC</div>
+      <div class="asymmetry-bar">
+        <div class="bar-ehc"><span class="bar-label">EHC</span></div>
+        <div class="bar-dev"><span class="bar-label">DEV</span></div>
+      </div>
+      <div class="camp-count dev">4 dev</div>
+    </div>
+    <div class="asymmetry-note">
+      17 scholars cite John 1:1-18. The asymmetry ratio is 3.25 : 1.
+    </div>
+  </div>
+
+  <!-- CONCEPT DIVERGENCE -->
+  <div class="divergence-section">
+    <div class="divergence-label">What does each camp see in this text?</div>
+    <div class="divergence-grid">
+      <!-- Headers -->
+      <div class="div-col-header ehc">EHC only</div>
+      <div class="div-col-header shared">Shared</div>
+      <div class="div-col-header dev">Developmental only</div>
+
+      <!-- Content -->
+      <div class="div-col ehc-col">
+        <div class="concept-pill ehc-only">divine identity</div>
+        <div class="concept-pill ehc-only">pre-existence</div>
+        <div class="concept-pill ehc-only">incarnation</div>
+        <div class="concept-pill ehc-only">worship pattern</div>
+        <div class="concept-pill ehc-only">two powers</div>
+        <div class="concept-count">5 concepts · EHC engages 6 dimensions</div>
+      </div>
+      <div class="div-col shared-col">
+        <div class="concept-pill shared">logos theology</div>
+        <div class="concept-count">1 shared concept</div>
+      </div>
+      <div class="div-col dev-col">
+        <div class="concept-pill dev-only">subordinationism</div>
+        <div class="concept-count">1 concept · developmental engages 2 dimensions</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHOLARS -->
+  <div class="scholars-section">
+    <div class="scholars-label">Scholars citing John 1:1-18</div>
+    <div class="scholar-grid">
+      <div class="scholar-row">
+        <span class="scholar-camp ehc">EHC</span>
+        <span class="scholar-name">Larry Hurtado</span>
+        <span class="scholar-detail">8 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp ehc">EHC</span>
+        <span class="scholar-name">Richard Bauckham</span>
+        <span class="scholar-detail">6 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp ehc">EHC</span>
+        <span class="scholar-name">Martin Hengel</span>
+        <span class="scholar-detail">5 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp ehc">EHC</span>
+        <span class="scholar-name">N.T. Wright</span>
+        <span class="scholar-detail">4 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp ehc">EHC</span>
+        <span class="scholar-name">Gordon Fee</span>
+        <span class="scholar-detail">3 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp ehc">EHC</span>
+        <span class="scholar-name">Richard Hays</span>
+        <span class="scholar-detail">3 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp ehc">EHC</span>
+        <span class="scholar-name">C.F.D. Moule</span>
+        <span class="scholar-detail">2 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp dev">DEV</span>
+        <span class="scholar-name">James D.G. Dunn</span>
+        <span class="scholar-detail">7 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp dev">DEV</span>
+        <span class="scholar-name">Bart Ehrman</span>
+        <span class="scholar-detail">4 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp dev">DEV</span>
+        <span class="scholar-name">Dan McClellan</span>
+        <span class="scholar-detail">2 publications</span>
+      </div>
+      <div class="scholar-row">
+        <span class="scholar-camp dev">DEV</span>
+        <span class="scholar-name">Maurice Casey</span>
+        <span class="scholar-detail">2 publications</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARBITER FRAMEWORK CARD -->
+  <div class="framework-card">
+    <div class="framework-title">The framework comparison</div>
+
+    <div class="step">
+      <div class="step-number burgundy">1</div>
+      <div class="step-content">
+        <div class="step-label burgundy">The methodological move</div>
+        <div class="step-text">
+          Modern critical scholarship separates Pauline and Johannine traditions
+          to preserve exegetical autonomy. The Prologue is read as a
+          self-contained theological statement within the Johannine corpus —
+          its relationship to Pauline <em>logos</em> usage is bracketed.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number gold">2</div>
+      <div class="step-content">
+        <div class="step-label gold">What's suppressed</div>
+        <div class="step-text">
+          The shared indwelling motif across both corpora. Paul's <em>Christos
+          en humin</em> and John's <em>pneuma tēs alētheias</em> use identical
+          locative constructions with second-person plural. Five peer-reviewed
+          sources affirm the grammatical parallel. The concept divergence above
+          shows EHC scholars engage five dimensions developmental scholars do not.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number green">3</div>
+      <div class="step-content">
+        <div class="step-label green">The patristic accounting</div>
+        <div class="step-text">
+          The patristic reading of these texts as a unified witness was not
+          harmonistic overreach — it was attending to the grammatical structure
+          the texts themselves present. Justin, Irenaeus, and Origen all read
+          John's <em>logos</em> in continuity with the Pauline <em>eikōn</em>
+          tradition.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number burgundy">4</div>
+      <div class="step-content">
+        <div class="step-label burgundy">The presupposition</div>
+        <div class="step-text">
+          <em>"The Bible cannot possess a unified supernatural theology."</em>
+          The developmental camp's consistent narrowing on this text — from six
+          conceptual dimensions to one — is not a finding. It is the consequence
+          of a presupposition that predetermines the result.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number neutral">5</div>
+      <div class="step-content">
+        <div class="step-label neutral">The disguise</div>
+        <div class="step-text">
+          Shrouded in the language of "historical context" and "tradition-history."
+          But Dunn's own citation pattern bridges Paul and John across ten
+          shared concepts — including on this very text. The methodology claims
+          separation; the scholar's own work demonstrates convergence.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARBITER CLOSING -->
+  <div class="arbiter-closing">
+    <p>
+      If both camps agree on the grammatical distinction in John 1:1 — theos
+      without the article for the Word, ho theos for the Father — and if
+      developmental scholars' own citation patterns bridge the corpora their
+      methodology insists on separating — the question the data surfaces is
+      not "who is right?" but "whose starting point are you inheriting,
+      and have you examined why?"
+    </p>
+  </div>
+
+  <!-- PIVOT LINKS -->
+  <div class="pivot-section">
+    <a class="pivot-card" href="watch.html?persona=archaeologist">
+      <div class="pivot-icon">← video</div>
+      <div class="pivot-title">Return to the debate</div>
+      <div class="pivot-desc">
+        Watch McClellan and Sijuwade argue about this text at 42:06.
+      </div>
+    </a>
+    <a class="pivot-card" href="watch.html?persona=detective">
+      <div class="pivot-icon">detective →</div>
+      <div class="pivot-title">Test the claim</div>
+      <div class="pivot-desc">
+        "The logos is a second god" — trace this claim across 17 scholars
+        and 828 publications.
+      </div>
+    </a>
+    <a class="pivot-card" href="watch.html?persona=advocate">
+      <div class="pivot-icon">advocate →</div>
+      <div class="pivot-title">Follow Dunn's citations</div>
+      <div class="pivot-desc">
+        Layer 3: where Dunn's own work bridges what his methodology separates.
+      </div>
+    </a>
+    <a class="pivot-card" href="watch.html?persona=archaeologist">
+      <div class="pivot-icon">archaeologist →</div>
+      <div class="pivot-title">Compare with Phil 2:6-11</div>
+      <div class="pivot-desc">
+        The most-cited contested text — 13 EHC vs 4 developmental scholars.
+      </div>
+    </a>
+  </div>
+
+</div>
+</body>
+</html>
