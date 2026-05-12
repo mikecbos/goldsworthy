@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects | Applied Research Portfolio</title>
+<style>
+  /* ---------- Reset & base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f8fafc;
+    color: #0f172a;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+
+  /* ---------- Layout ---------- */
+  .wrap { max-width: 1024px; margin: 0 auto; padding: 5rem 1.5rem; }
+
+  header.intro { border-bottom: 1px solid #e5e7eb; padding-bottom: 2.5rem; margin-bottom: 4rem; }
+  header.intro h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.025em; margin: 0; color: #0f172a; }
+  header.intro p  { font-size: 1.25rem; color: #64748b; max-width: 48rem; margin: 1rem 0 0; }
+
+  .stack { display: flex; flex-direction: column; gap: 3rem; }
+
+  /* ---------- Project cards ---------- */
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+  }
+
+  .row { display: flex; flex-direction: column; gap: 3rem; }
+  @media (min-width: 900px) {
+    .row { flex-direction: row; align-items: stretch; }
+    .row > * { flex: 1; }
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .pill.indigo { background: #eef2ff; color: #4f46e5; }
+  .pill.stone  { background: #f5f5f4; color: #57534e; }
+
+  .card h2 { font-size: 1.875rem; font-weight: 700; color: #1e293b; margin: 0 0 0.75rem; }
+  .card .lede { font-size: 1.1rem; color: #475569; margin: 0 0 1.5rem; }
+
+  .links { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; margin-bottom: 2rem; }
+  .links a.primary {
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .links a.primary.indigo { color: #4f46e5; }
+  .links a.primary.indigo:hover { color: #3730a3; }
+  .links a.primary.stone  { color: #57534e; }
+  .links a.primary.stone:hover  { color: #1c1917; }
+  .links a.secondary {
+    color: #94a3b8;
+    font-style: italic;
+    text-decoration: underline;
+    text-decoration-color: #e2e8f0;
+    text-underline-offset: 4px;
+  }
+  .links a.secondary:hover { color: #475569; }
+
+  /* ---------- Interactive panels ---------- */
+  .panel {
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+  .panel-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #94a3b8;
+    margin: 0 0 1rem;
+  }
+
+  /* AdjacentC controls */
+  .controls { display: flex; flex-direction: column; gap: 1rem; }
+  .controls input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    font-size: 1rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    outline: none;
+    transition: box-shadow 0.2s;
+  }
+  .controls input[type="text"]:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.3); }
+
+  .sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .sliders label { display: block; font-size: 0.75rem; font-weight: 600; color: #64748b; margin-bottom: 0.25rem; }
+  .sliders input[type="range"] {
+    width: 100%;
+    accent-color: #4f46e5;
+    cursor: pointer;
+  }
+
+  button.plot-btn {
+    width: 100%;
+    background: #0f172a;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.85rem;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+  }
+  button.plot-btn:hover { background: #4f46e5; }
+
+  /* Canvas frame */
+  .canvas-frame {
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  #flowCanvas {
+    background: #fdfdfd;
+    border-radius: 0.75rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 100%;
+    height: auto;
+    cursor: crosshair;
+  }
+  .axis-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 1rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: -0.02em;
+  }
+
+  /* ScriptureStory center column */
+  .center { max-width: 48rem; margin: 0 auto; text-align: center; }
+  .center .links { justify-content: center; margin-bottom: 3rem; }
+
+  .story-panel {
+    background: #fafaf9;
+    border: 1px solid #f5f5f4;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+  }
+  .story-tag {
+    position: absolute;
+    top: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 0.25rem 1rem;
+    border-radius: 999px;
+    border: 1px solid #e7e5e4;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #94a3b8;
+    white-space: nowrap;
+  }
+  #story-text {
+    font-size: 1.25rem;
+    font-style: italic;
+    color: #292524;
+    font-family: Georgia, "Times New Roman", serif;
+    margin: 1rem 0 2rem;
+    line-height: 1.5;
+    transition: opacity 0.2s ease;
+  }
+  #story-choices {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  #story-choices button {
+    padding: 0.5rem 1.5rem;
+    background: #fff;
+    border: 1px solid #e7e5e4;
+    color: #1c1917;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    transition: background 0.2s, color 0.2s;
+  }
+  #story-choices button:hover { background: #1c1917; color: #fff; }
+
+  /* External-link arrow */
+  .ext-arrow { width: 1rem; height: 1rem; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="intro">
+    <h1>Projects</h1>
+    <p>A "show, don't tell" approach to research. These digital platforms are the practical working-out of theoretical papers published on Knowledge Commons.</p>
+  </header>
+
+  <div class="stack">
+
+    <!-- =============== ADJACENT C =============== -->
+    <section class="card">
+      <div class="row">
+        <div>
+          <span class="pill indigo">Motivation &amp; Play Theory</span>
+          <h2>AdjacentC</h2>
+          <p class="lede">An interactive framework exploring the continuum between play and professional engagement. The platform implements the Flow (Csikszentmihalyi) and Self-Determination (Deci &amp; Ryan) theories developed in the underlying research.</p>
+
+          <div class="links">
+            <a class="primary indigo" href="https://adjacentc.work" target="_blank" rel="noopener">
+              Launch Site
+              <svg class="ext-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+            <a class="secondary" href="https://hdl.handle.net/1903/24050" target="_blank" rel="noopener">Published Research (Knowledge Commons)</a>
+          </div>
+
+          <div class="panel">
+            <p class="panel-label">Flow State Visualizer</p>
+            <div class="controls">
+              <input type="text" id="taskName" placeholder="Enter a task (e.g. Design, Coding)">
+              <div class="sliders">
+                <div>
+                  <label for="challenge">Challenge Level</label>
+                  <input type="range" id="challenge" min="0" max="100" value="50">
+                </div>
+                <div>
+                  <label for="skill">Skill Level</label>
+                  <input type="range" id="skill" min="0" max="100" value="50">
+                </div>
+              </div>
+              <button class="plot-btn" onclick="plotPoint()">Plot onto Matrix</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="canvas-frame">
+          <canvas id="flowCanvas" width="320" height="320"></canvas>
+          <div class="axis-labels">
+            <span>LOW SKILL</span>
+            <span>HIGH SKILL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== SCRIPTURE STORY =============== -->
+    <section class="card">
+      <div class="center">
+        <span class="pill stone">Theological Inquiry</span>
+        <h2>Scripture Story</h2>
+        <p class="lede">A collaborative narrative engine designed to facilitate "shared responsibility for learning." It transforms static study into a dynamic group investigation, operationalizing the seven-practice spiral of glory-centered practical theology.</p>
+
+        <div class="links">
+          <a class="primary stone" href="https://scripturestory.org" target="_blank" rel="noopener">
+            Launch Site
+            <svg class="ext-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <a class="secondary" href="#" target="_blank" rel="noopener">Research Paper (Knowledge Commons)</a>
+        </div>
+
+        <div class="story-panel">
+          <span class="story-tag">Interactive Logic Sample</span>
+          <p id="story-text">"The story begins not with answers, but with a shared inquiry..."</p>
+          <div id="story-choices"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+/* --- AdjacentC: Flow State Visualizer --- */
+(function () {
+  const canvas = document.getElementById('flowCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const points = [];
+
+  function drawMatrix() {
+    ctx.clearRect(0, 0, 320, 320);
+
+    // Flow channel polygon (diagonal band)
+    ctx.fillStyle = '#eef2ff';
+    ctx.beginPath();
+    ctx.moveTo(0, 320);
+    ctx.lineTo(320, 0);
+    ctx.lineTo(320, 80);
+    ctx.lineTo(80, 320);
+    ctx.closePath();
+    ctx.fill();
+
+    // Diagonal axis
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, 320);
+    ctx.lineTo(320, 0);
+    ctx.stroke();
+
+    // Quadrant labels
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = 'bold 10px sans-serif';
+    ctx.fillText('ANXIETY (High Challenge)', 15, 30);
+    ctx.fillText('BOREDOM (High Skill)', 175, 305);
+
+    // Flow channel label (rotated)
+    ctx.fillStyle = '#6366f1';
+    ctx.save();
+    ctx.translate(160, 160);
+    ctx.rotate(-Math.PI / 4);
+    ctx.textAlign = 'center';
+    ctx.fillText('THE FLOW CHANNEL', 0, -8);
+    ctx.restore();
+
+    // Plot points
+    points.forEach(p => {
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = '12px sans-serif';
+      ctx.fillText(p.name, p.x + 10, p.y + 4);
+    });
+  }
+
+  window.plotPoint = function () {
+    const name = document.getElementById('taskName').value || 'Current Task';
+    const skill = parseFloat(document.getElementById('skill').value);
+    const challenge = parseFloat(document.getElementById('challenge').value);
+    const x = (skill / 100) * 320;
+    const y = 320 - (challenge / 100) * 320;
+    points.push({ name, x, y });
+    drawMatrix();
+    document.getElementById('taskName').value = '';
+  };
+
+  drawMatrix();
+})();
+
+/* --- ScriptureStory: Branching Inquiry --- */
+(function () {
+  const story = {
+    start: {
+      text: "Do you approach the text as an objective observer or an active participant?",
+      choices: [
+        { t: "Objective Observer", n: "obs" },
+        { t: "Active Participant",  n: "part" }
+      ]
+    },
+    obs: {
+      text: "Distance provides clarity, but the 'energy' remains dormant. The researcher sees the form, but the community remains untouched.",
+      choices: [{ t: "Engage Closer", n: "part" }]
+    },
+    part: {
+      text: "The narrative mirrors lived experience. As responsibility is shared, a contagion of energy rises within the group.",
+      choices: [{ t: "Restart Inquiry", n: "start" }]
+    }
+  };
+
+  function setStory(key) {
+    const node = story[key];
+    const textEl = document.getElementById('story-text');
+    if (!textEl) return;
+
+    textEl.style.opacity = 0;
+    setTimeout(() => {
+      textEl.innerText = node.text;
+      textEl.style.opacity = 1;
+      const container = document.getElementById('story-choices');
+      container.innerHTML = '';
+      node.choices.forEach(c => {
+        const b = document.createElement('button');
+        b.innerText = c.t;
+        b.onclick = () => setStory(c.n);
+        container.appendChild(b);
+      });
+    }, 200);
+  }
+
+  setStory('start');
+})();
+</script>
+
+</body>
+</html>
